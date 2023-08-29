@@ -1,0 +1,69 @@
+body{
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+.list
+{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid green;
+
+}
+
+.product
+{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    padding-bottom: 1rem;
+}
+
+.product h3{
+    margin: 0 0 0.25rem 0 ;
+}
+
+
+.description{
+    font-style: bold;
+}
+
+.price{
+    color:green;
+    font-weight: bold;
+    margin-top: 0.25rem;
+    font-size: 1.25rem;
+}
+
+
+.form
+{ 
+
+    display: flex;
+    flex-direction: column;
+    gap:15px;
+}
+
+.form input{
+    width :35%;
+    border-radius: 4px;
+}
+
+.form label{
+    font-weight: bold;
+}
+
+.form button {
+    cursor: pointer;
+    font-weight: bold;
+    background-color:  green;
+    color:white;
+    border-radius: 20px; 
+    border-color: 1px solid rgb(41, 219, 41); 
+    padding: 0.25rem 2rem;
+    
+ 
+ 
+ }
+ 
