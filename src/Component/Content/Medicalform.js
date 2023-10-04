@@ -9,6 +9,7 @@ const Medicalform = () => {
     const DescriptionRef = useRef();
     const PriceRef = useRef();
     const productctx = useContext(ProductContext);
+    const api='https://react-medicals-default-rtdb.firebaseio.com'
 
     const ProductHandler = (event) => {
         event.preventDefault();
@@ -16,6 +17,7 @@ const Medicalform = () => {
         const enteredDescription = DescriptionRef.current.value;
         const enteredPrice = PriceRef.current.value;
         const enterprice = +enteredPrice;
+        
 
         const newproduct ={
             name: enteredname,
@@ -23,11 +25,27 @@ const Medicalform = () => {
             price: enterprice
         }
         productctx.addtocard(newproduct);
-
-
+        fetchfun(newproduct);
         nameRef.current.value = '';
         DescriptionRef.current.value = '';
         PriceRef.current.value = '';
+
+    }
+
+    const fetchfun = async (product) => {
+        
+        const response = await fetch(`${api}/product.json`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                name: product.name,
+                description: product.description,
+                price:product.price
+                })
+        });
+        if (!response.ok) throw new Error('fech function failed');
+        const data = await response.json();
+        
     }
 
    

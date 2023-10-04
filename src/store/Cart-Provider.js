@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useCallback,useEffect,useReducer } from 'react'
 import CartContext from './Cart-Context'
 
 const initialState = {
@@ -40,7 +40,6 @@ const Reducer = (state, action) => {
           products: updatedproducts,
           totalAmount:updateTotalPrice
     }
-    
   }
   if (action.type === 'REMOVE')
   {
@@ -83,14 +82,39 @@ const Reducer = (state, action) => {
 const CartProvider = (props) => {
 
   const [state, dispatch] = useReducer(Reducer, initialState)
+  const api='https://react-medicals-default-rtdb.firebaseio.com/cart.json'
   
   const AddProductToCart = (product) => {
-    dispatch({type:'ADD' , product:product})
+    dispatch({ type: 'ADD', product: product })
   }
 
   const RemoveProductToCart = (product) => {
     dispatch({type:'REMOVE' , product:product})
   }
+
+  const fetchFun = useCallback(async () => {
+    const response = await fetch(`${api}`);
+    if (!response.ok) throw new Error('fetching product failed');
+    const data = await response.json();
+    console.log(data);
+    let product = [];
+    for (let key in data) {
+        product.push({
+            name: data[key].name,
+          price: data[key].price,
+           amount:data[key].amount
+            
+        })
+    }
+    product.forEach((item) => {
+        dispatch({ type: 'ADD', product: item })
+    })
+  }, [api, dispatch])
+  
+  useEffect(() => {
+    fetchFun();
+  }, [api,dispatch]);
+
 
   const cartContext = {
     products: state.products,
@@ -107,3 +131,4 @@ const CartProvider = (props) => {
 }
 
 export default CartProvider
+

@@ -8,17 +8,27 @@ import CartList from './CartList';
 const Cart = (props) => {
  
   const Cartctx = useContext(CartContext);
+  const api='https://react-medicals-default-rtdb.firebaseio.com/cart.json'
+  
 
   const cartAddHandler = (product) => {
-    Cartctx.addProduct({...product,amount:1})
+    Cartctx.addProduct({ ...product, amount: 1 })
+    fetchFun({ ...product, amount: 1 });
+    
+  }
+
+  const fetchFun = async(product) => {
+       
+    const response = await fetch(`${api}`, {
+      method: 'POST',
+      body: JSON.stringify(product),
+      headers: { 'Content-Type': 'application/JSON' }
+    })
   }
 
   const cartRemoveHandler = (product) => {
     Cartctx.removeProduct(product);
   }
-
-
-
 
 
     const CartItems = (

@@ -6,26 +6,39 @@ const ProductList = ({ name, description, price }) => {
     const cartctx = useContext(CartContext);
 
     const Amountref = useRef();
+    const api = 'https://react-medicals-default-rtdb.firebaseio.com';
      
     const submitHandler = (e) => {
         e.preventDefault();
 
         const enteredAmount = Amountref.current.value;
         const enteredAmountInInt = +enteredAmount;
-
-        cartctx.addProduct({
+        let product = {
             name: name,
             price: Number(price),
-            amount: enteredAmountInInt
-        });
-        
+            amount:enteredAmountInInt
+        }
+
+        cartctx.addProduct(product);
+        FechFun(product);
     }
 
-
-
+    const FechFun = async(product) => {
+        const response = await fetch(`${api}/cart.json`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: product.name,
+                price: product.price,
+                amount:product.amount
+            })
+        })
+        if (!response.ok) throw new Error('Fetch Function Failed');
+        const data = await response.json();
+    }
 
   return (
-      <li className={classes.list}>
+      <li className={classes.list} key={name}>
           <div className={classes.product}> 
               <h3 className={classes.name}>{name}</h3>
               <div className={classes.description}>{description}</div>
