@@ -38,7 +38,7 @@ const ProductList = ({ name, description, price }) => {
     }
 
   return (
-      <li className={classes.list} key={name}>
+      <li className={classes.list} key={Math.random()}>
           <div className={classes.product}> 
               <h3 className={classes.name}>{name}</h3>
               <div className={classes.description}>{description}</div>

@@ -1,4 +1,4 @@
-import React, { useCallback,useEffect,useReducer } from 'react'
+import React, { useEffect,useReducer } from 'react'
 import CartContext from './Cart-Context'
 
 const initialState = {
@@ -92,7 +92,7 @@ const CartProvider = (props) => {
     dispatch({type:'REMOVE' , product:product})
   }
 
-  const fetchFun = useCallback(async () => {
+  const fetchFun = async () => {
     const response = await fetch(`${api}`);
     if (!response.ok) throw new Error('fetching product failed');
     const data = await response.json();
@@ -109,11 +109,11 @@ const CartProvider = (props) => {
     product.forEach((item) => {
         dispatch({ type: 'ADD', product: item })
     })
-  }, [api, dispatch])
+  }
   
   useEffect(() => {
     fetchFun();
-  }, [api,dispatch]);
+  }, []);
 
 
   const cartContext = {

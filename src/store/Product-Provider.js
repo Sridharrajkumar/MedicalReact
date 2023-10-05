@@ -1,6 +1,6 @@
 
 
-import React, { useCallback, useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useReducer, useState } from 'react'
 import ProductContext from './Product-Context'
 
 const initialProducts = {
@@ -23,12 +23,8 @@ const Reducer = (state, action) => {
 
 const ProductProvider = (props) => {
     const [state, dispatch] = useReducer(Reducer, initialProducts);
-    const [FechedData, SetfetchedData] = useState(false);
     const api = 'https://react-medicals-default-rtdb.firebaseio.com/product.json';
-
-   
-
-    const fetchFun = useCallback(async () => {
+    const fetchFun = async () => {
         const response = await fetch(`${api}`);
         if (!response.ok) throw new Error('fetching product failed');
         const data = await response.json();
@@ -43,11 +39,12 @@ const ProductProvider = (props) => {
         product.forEach((item) => {
             dispatch({ type: 'ADD_TO_CARD', product: item })
         })
-    },[api,dispatch])
+    }
 
     useEffect(() => {
+        console.log('useEffect is running');
         fetchFun();
-    }, [fetchFun]);
+    }, []);
 
     const AddtoCard = (product) =>
     {
@@ -69,3 +66,4 @@ const ProductProvider = (props) => {
 }
 
 export default ProductProvider
+
